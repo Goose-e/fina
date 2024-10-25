@@ -6,7 +6,6 @@ function create_str(jsonData) {
         var tr = document.createElement("tr");
         tr.setAttribute("class", "stoka_2");
         table.appendChild(tr);
-        item.replace('E','o');
         const regul =/'/g;
 
         item = item.replace(regul,'\"');
@@ -41,3 +40,4 @@ fetch('datatest.json')
     })
     .catch(error => console.error('Ошибка при получении данных:', error));
 
+setInterval(location.reload,2000)

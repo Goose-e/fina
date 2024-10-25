@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 import json
 
 MethBP = Blueprint('Meth', __name__)
@@ -23,9 +23,9 @@ def userPing():
     if request.method == 'POST':
         form = json.loads(request.json)
         with open("www/files/js/datatest.log", "a", encoding="utf-8") as file:
-            file.write(str(form))
-            file.write("\n")
+            file.write(f'{{"Endpoint": "{form["Endpoint"]}", "Message": "{form["Message"]}", "SupportLevel": "{form["SupportLevel"]}", "Timestamp": "{form["Timestamp"]}"}}\n')
         return "Запрос прошел"
+
 
 @MethBP.route('/datatest.json', methods=["GET", "POST"])
 def datajson():
@@ -33,7 +33,5 @@ def datajson():
     with open("www/files/js/datatest.log", "r", encoding="utf-8") as file:
         lines = file.readlines()
         for line in lines:
-            item = {"Message": line.strip()}  # Process each line into a dict
-            list.append(item)
-    return json.dumps({"Message": list})  # Return the list as part of the Message key
-
+            list.append(line)
+    return jsonify({"Message": list})  # Return the list as part of the Message key
